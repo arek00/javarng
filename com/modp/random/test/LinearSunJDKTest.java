@@ -39,25 +39,25 @@ import junit.framework.TestCase;
 
 /**
  * Unit test for LinearSunJDK
- * 
+ *
  * @author Nick Galbreath -- nickg [at] modp [dot] com
  * @version 1 -- 06-Jul-2005
  */
 public class LinearSunJDKTest extends TestCase {
 
-	/**
-	 * Test to see if this matches java.util.Random.
-	 *
-	 */
-	public void testCorrectness() {
-		java.util.Random r= new java.util.Random(1L);
-		RandomGenerator rg = new LinearSunJDK(1L);
-		for (int i = 0; i < 100; ++i) {
-			assertEquals(r.nextInt(),rg.next(32));
-		}
+    /**
+     * Test to see if this matches java.util.Random.
+     *
+     */
+    public void testCorrectness() {
+	java.util.Random r = new java.util.Random(1L);
+	RandomGenerator rg = new LinearSunJDK(1L);
+	for (int i = 0; i < 100; ++i) {
+	    assertEquals(r.nextInt(),rg.next(32));
 	}
-	
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(LinearSunJDKTest.class);
-	}
+    }
+
+    public static void main(String[] args) {
+	junit.textui.TestRunner.run(LinearSunJDKTest.class);
+    }
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2005, Nick Galbreath -- nickg [at] modp [dot] com
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
@@ -31,7 +31,7 @@
  *
  * This is the standard "new" BSD license:
  * http://www.opensource.org/licenses/bsd-license.php
- * 
+ *
  * Portions may also be
  * Copyright (C) 2004, Makoto Matsumoto and Takuji Nishimura,
  * All rights reserved.
@@ -42,12 +42,12 @@ package com.modp.random;
 
 /**
  * Mersenne Twister 64-bit.
- * 
+ *
  * <p>Similar to the regular Mersenne Twister but is implemented use
- * 64-bit registers (Java <code>long</code>) and produces 
+ * 64-bit registers (Java <code>long</code>) and produces
  * different output.
  * </p>
- * <p>This is mostly a straight port of the 
+ * <p>This is mostly a straight port of the
  * <a href="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/VERSIONS/C-LANG/mt19937-64.c">
  * C-code (mt19937-64.c)</a>,
  * but made more "java-like".
@@ -60,159 +60,159 @@ package com.modp.random;
  * <a href="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html">
  * The Mersenne Twister Home Page </a>
  * </li>
- * <li>  Makato Matsumoto and Takuji Nishimura, 
+ * <li>  Makato Matsumoto and Takuji Nishimura,
  * <a href="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/ARTICLES/mt.pdf">"Mersenne Twister:A 623-Dimensionally Equidistributed Uniform Pseudo-Random Number Generator"</a>,
  * <i>ACM Transactions on Modeling and Computer Simulation, </i> Vol. 8, No. 1,
  * January 1998, pp 3--30.</li>
  * </ul>
- * 
+ *
  * @author Nick Galbreath -- nickg [at] modp [dot] com
  * @version 1 -- 06-Jul-2005
  */
 public class MersenneTwister64 implements RandomGenerator {
-	private static final int NN = 312;
+    private static final int NN = 312;
 
-	private static final int MM = 156;
+    private static final int MM = 156;
 
-	private static final long MATRIX_A = 0xB5026F5AA96619E9L;
+    private static final long MATRIX_A = 0xB5026F5AA96619E9L;
 
-	/**
-	 * Mask: Most significant 33 bits 
-	 */
-	private static final long UM = 0xFFFFFFFF80000000L;
+    /**
+     * Mask: Most significant 33 bits
+     */
+    private static final long UM = 0xFFFFFFFF80000000L;
 
-	/**
-	 * Mask: Least significant 31 bits
-	 */
-	private static final long LM = 0x7FFFFFFFL; 
+    /**
+     * Mask: Least significant 31 bits
+     */
+    private static final long LM = 0x7FFFFFFFL;
 
-	private static final long[] mag01 = { 0L, MATRIX_A };
+    private static final long[] mag01 = { 0L, MATRIX_A };
 
-	private long[] mt = new long[NN];
+    private long[] mt = new long[NN];
 
-	private int mti = NN + 1;
+    private int mti = NN + 1;
 
-	/**
-	 * Internal to hold 64 bits, that might
-	 * used to generate two 32 bit values.
-	 */
-	private long bits;
+    /**
+     * Internal to hold 64 bits, that might
+     * used to generate two 32 bit values.
+     */
+    private long bits;
 
-	/**
-	 * 
-	 */
-	private boolean bitState = true;
+    /**
+     *
+     */
+    private boolean bitState = true;
 
-	/**
-	 * 
-	 */
-	public MersenneTwister64() {
-		setSeed(System.currentTimeMillis());
+    /**
+     *
+     */
+    public MersenneTwister64() {
+	setSeed(System.currentTimeMillis());
+    }
+
+    public MersenneTwister64(final long seed) {
+	setSeed(seed);
+    }
+
+    public MersenneTwister64(final long[] ary) {
+	setSeed(ary);
+    }
+
+    /**
+     * Initalize the pseudo random number generator with 32-bits.
+     */
+    public void setSeed(final long seed) {
+	mt[0] = seed;
+	for (mti = 1; mti < NN; mti++) {
+	    mt[mti] = (6364136223846793005L * (mt[mti - 1] ^ (mt[mti - 1] >>> 62)) + mti);
+	}
+    }
+
+    public void setSeed(final long[] array) {
+	setSeed(19650218L);
+	int i = 1;
+	int j = 0;
+	int k = (NN > array.length ? NN : array.length);
+	for (; k != 0; k--) {
+	    mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 62)) * 3935559000370003845L))
+		+ array[j] + j;
+	    i++;
+	    j++;
+	    if (i >= NN) {
+		mt[0] = mt[NN - 1];
+		i = 1;
+	    }
+	    if (j >= array.length)
+		j = 0;
+	}
+	for (k = NN - 1; k != 0; k--) {
+	    mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 62)) * 2862933555777941757L))
+		- i;
+	    i++;
+	    if (i >= NN) {
+		mt[0] = mt[NN - 1];
+		i = 1;
+	    }
 	}
 
-	public MersenneTwister64(final long seed) {
-		setSeed(seed);
+	mt[0] = 1L << 63; /* MSB is 1; assuring non-zero initial array */
+    }
+
+    /**
+     * Returns up to 32 random bits.
+     *
+     * <p>the implementation splits a 64-bit long into
+     * two 32-bit chunks.
+     * </p>
+     */
+    public int next(final int numbits) {
+	//return ((int)next64()) >>> (32 - numbits);
+
+	if (bitState) {
+	    bits = next64();
+	    bitState = false;
+	    return (int) (bits >>> (64 - numbits));
+	} else {
+	    bitState = true;
+	    return ((int) bits) >>> (32 - numbits);
+	}
+    }
+
+    /**
+     * returns 64 random bits.
+     *
+     * <p>
+     * MT64 is unique in that it natively generates
+     * 64-bit of randomness per cycle. This method
+     * exposes that.
+     * </p>
+     */
+    public long next64() {
+	int i;
+	long x;
+	if (mti >= NN) { /* generate NN words at one time */
+
+	    for (i = 0; i < NN - MM; i++) {
+		x = (mt[i] & UM) | (mt[i + 1] & LM);
+		mt[i] = mt[i + MM] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
+	    }
+	    for (; i < NN - 1; i++) {
+		x = (mt[i] & UM) | (mt[i + 1] & LM);
+		mt[i] = mt[i + (MM - NN)] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
+	    }
+	    x = (mt[NN - 1] & UM) | (mt[0] & LM);
+	    mt[NN - 1] = mt[MM - 1] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
+
+	    mti = 0;
 	}
 
-	public MersenneTwister64(final long[] ary) {
-		setSeed(ary);
-	}
+	x = mt[mti++];
 
-	/**
-	 * Initalize the pseudo random number generator with 32-bits.
-	 */
-	public void setSeed(final long seed) {
-		mt[0] = seed;
-		for (mti = 1; mti < NN; mti++) {
-			mt[mti] = (6364136223846793005L * (mt[mti - 1] ^ (mt[mti - 1] >>> 62)) + mti);
-		}
-	}
+	x ^= (x >>> 29) & 0x5555555555555555L;
+	x ^= (x << 17) & 0x71D67FFFEDA60000L;
+	x ^= (x << 37) & 0xFFF7EEE000000000L;
+	x ^= (x >>> 43);
 
-	public void setSeed(final long[] array) {
-		setSeed(19650218L);
-		int i = 1;
-		int j = 0;
-		int k = (NN > array.length ? NN : array.length);
-		for (; k != 0; k--) {
-			mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 62)) * 3935559000370003845L))
-					+ array[j] + j;
-			i++;
-			j++;
-			if (i >= NN) {
-				mt[0] = mt[NN - 1];
-				i = 1;
-			}
-			if (j >= array.length)
-				j = 0;
-		}
-		for (k = NN - 1; k != 0; k--) {
-			mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 62)) * 2862933555777941757L))
-					- i;
-			i++;
-			if (i >= NN) {
-				mt[0] = mt[NN - 1];
-				i = 1;
-			}
-		}
-
-		mt[0] = 1L << 63; /* MSB is 1; assuring non-zero initial array */
-	}
-
-	/**
-	 * Returns up to 32 random bits.
-	 * 
-	 * <p>the implementation splits a 64-bit long into
-	 * two 32-bit chunks.
-	 * </p>
-	 */
-	public int next(final int numbits) {
-		//return ((int)next64()) >>> (32 - numbits);
-		
-		if (bitState) {
-			bits = next64();
-			bitState = false;
-			return (int) (bits >>> (64 - numbits));
-		} else {
-			bitState = true;
-			return ((int) bits) >>> (32 - numbits);
-		}
-	}
-
-	/** 
-	 * returns 64 random bits.
-	 * 
-	 * <p>
-	 * MT64 is unique in that it natively generates
-	 * 64-bit of randomness per cycle. This method
-	 * exposes that.
-	 * </p>
-	 */
-	public long next64() {
-		int i;
-		long x;
-		if (mti >= NN) { /* generate NN words at one time */
-
-			for (i = 0; i < NN - MM; i++) {
-				x = (mt[i] & UM) | (mt[i + 1] & LM);
-				mt[i] = mt[i + MM] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
-			}
-			for (; i < NN - 1; i++) {
-				x = (mt[i] & UM) | (mt[i + 1] & LM);
-				mt[i] = mt[i + (MM - NN)] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
-			}
-			x = (mt[NN - 1] & UM) | (mt[0] & LM);
-			mt[NN - 1] = mt[MM - 1] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
-
-			mti = 0;
-		}
-
-		x = mt[mti++];
-
-		x ^= (x >>> 29) & 0x5555555555555555L;
-		x ^= (x << 17) & 0x71D67FFFEDA60000L;
-		x ^= (x << 37) & 0xFFF7EEE000000000L;
-		x ^= (x >>> 43);
-
-		return x;
-	}
+	return x;
+    }
 }

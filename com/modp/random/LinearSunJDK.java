@@ -1,5 +1,5 @@
 /*
- * Copyright 2005, Nick Galbreath -- nickg [at] modp [dot] com
+ * Copyright 2005, 2007 Nick Galbreath -- nickg [at] modp [dot] com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,42 +36,42 @@ package com.modp.random;
 
 /**
  * Re-implemtation of the PRNG from java.util.Random.
- * 
+ *
  * <p>This is a re-implementation of the random number generation
  * that is used in Sun's <code>java.util.Random</code>.  It is unsynchronized
  * and so it is about 2x faster.
  * </p>
- * 
+ *
  * @author Nick Galbreath nickg [at] modp [dot] com
  * @version 1 -- 06-Jul-2005
  */
 public class LinearSunJDK implements RandomGenerator {
 
-	private long seed;
-	private final static long multiplier = 0x5DEECE66DL;
+    private long seed;
+    private final static long multiplier = 0x5DEECE66DL;
     private final static long addend = 0xBL;
     private final static long mask = (1L << 48) - 1;
-    
-	/**
-	 * 
-	 */
-	public LinearSunJDK() {
-		setSeed(System.currentTimeMillis());
-	}
-	
-	public LinearSunJDK(final long seed) {
-		setSeed(seed);
-	}
-	
-	public void setSeed(long seed) {
-        seed = (seed ^ multiplier) & mask;
-	}
 
-	/* (non-Javadoc)
-	 * @see com.modp.random.RandomGenerator#next(int)
-	 */
-	public int next(int numBits) {
-		seed = (seed * multiplier + addend) & mask;
-		return (int)(seed >>> (48 - numBits));
-	}
+    /* Constructor, initializes seed with current time
+     * 
+     */
+    public LinearSunJDK() {
+	setSeed(System.currentTimeMillis());
+    }
+
+    public LinearSunJDK(final long seed) {
+	setSeed(seed);
+    }
+
+    public void setSeed(long seed) {
+        this.seed = (seed ^ multiplier) & mask;
+    }
+
+    /* (non-Javadoc)
+     * @see com.modp.random.RandomGenerator#next(int)
+     */
+    public int next(int numBits) {
+	seed = (seed * multiplier + addend) & mask;
+	return (int)(seed >>> (48 - numBits));
+    }
 }
