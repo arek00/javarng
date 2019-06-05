@@ -32,9 +32,7 @@
  * This is the standard "new" BSD license:
  * http://www.opensource.org/licenses/bsd-license.php
  */
-package com.modp.random.test;
-import com.modp.random.RandomGenerator;
-import com.modp.random.LinearSunJDK;
+package com.modp.random;
 import junit.framework.TestCase;
 
 /**

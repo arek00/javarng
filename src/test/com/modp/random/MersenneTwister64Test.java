@@ -32,10 +32,9 @@
  * This is the standard "new" BSD license:
  * http://www.opensource.org/licenses/bsd-license.php
  */
-package com.modp.random.test;
+package com.modp.random;
 
 import java.math.BigInteger;
-import com.modp.random.MersenneTwister64;
 
 import junit.framework.TestCase;
 

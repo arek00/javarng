@@ -32,12 +32,10 @@
  * This is the standard "new" BSD license:
  * http://www.opensource.org/licenses/bsd-license.php
  */
-package com.modp.random.test;
+package com.modp.random;
 
 import junit.framework.TestCase;
 import java.util.Arrays;
-
-import com.modp.random.Rule30Cells192;
 
 /**
  * Unit tests for Rule30Cells192

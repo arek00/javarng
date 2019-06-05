@@ -33,9 +33,8 @@
  * http://www.opensource.org/licenses/bsd-license.php
  */
 
-package com.modp.random.test;
+package com.modp.random;
 
-import com.modp.random.MersenneTwister;
 import junit.framework.TestCase;
 
 /**

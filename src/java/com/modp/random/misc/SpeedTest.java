@@ -51,7 +51,7 @@ public class SpeedTest {
 		RandomGenerator r1 = new LinearSunJDK(1L);
 		RandomGenerator r2 = new MersenneTwister(1);
 		RandomGenerator r3 = new Rule30Cells192(1L << 32);
-		RandomGenerator r4 = new BaileyCrandall(1L << 32);		
+		RandomGenerator r4 = new BaileyCrandall(1L << 32);
 		RandomGenerator r5 = new BlumBlumShub(512);
 		RandomGenerator r6 = new MersenneTwister64(1L);
 		Random rand = new Random();

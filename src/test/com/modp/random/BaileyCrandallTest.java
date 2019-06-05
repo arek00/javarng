@@ -33,8 +33,7 @@
  * http://www.opensource.org/licenses/bsd-license.php
  */
 
-package com.modp.random.test;
-import com.modp.random.BaileyCrandall;
+package com.modp.random;
 
 import junit.framework.TestCase;
 
