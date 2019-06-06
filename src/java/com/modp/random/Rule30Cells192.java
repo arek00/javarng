@@ -199,8 +199,8 @@ public class Rule30Cells192 implements RandomGenerator {
      *
      * @see java.util.Random#next(int)
      */
-    public int next(final int bits) {
-	int result = 0;
+    public long next(final int bits) {
+	long result = 0;
 	long t0, t1, t2;
 
 	// ROTATE LEFT foo = (foo << 1) | (foo >>> 63);

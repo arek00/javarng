@@ -200,7 +200,7 @@ public class BaileyCrandall implements RandomGenerator {
      * @param numBits  number of bits
      * @return an integer
      */
-    public int next(final int numBits) {
+    public long next(final int numBits) {
 
 	// floating point method
 	// return (int) Math.round(nextDouble() * (1 << numBits -1));

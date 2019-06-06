@@ -70,7 +70,7 @@ public class LinearSunJDK implements RandomGenerator {
     /* (non-Javadoc)
      * @see com.modp.random.RandomGenerator#next(int)
      */
-    public int next(int numBits) {
+    public long next(int numBits) {
 	seed = (seed * multiplier + addend) & mask;
 	return (int)(seed >>> (48 - numBits));
     }

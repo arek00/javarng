@@ -50,6 +50,6 @@ public interface RandomGenerator {
      * @param numBits
      * @return and int with the LSB being random
      */
-    public int next(int numBits);
+    public long next(int numBits);
 
 }

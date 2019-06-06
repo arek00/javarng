@@ -161,7 +161,7 @@ public class MersenneTwister implements RandomGenerator {
 	mt[0] = 0x80000000; // MSB is 1; assuring non-zero initial array
     }
 
-    public int next(final int bits) {
+    public long next(final int bits) {
 	int y;
 	if (mti >= N) {
 	    int kk;

@@ -86,7 +86,7 @@ public class MersenneTwister64 implements RandomGenerator {
      */
     private static final long LM = 0x7FFFFFFFL;
 
-    private static final long[] mag01 = { 0L, MATRIX_A };
+    private static final long[] mag01 = {0L, MATRIX_A};
 
     private long[] mt = new long[NN];
 
@@ -107,55 +107,55 @@ public class MersenneTwister64 implements RandomGenerator {
      *
      */
     public MersenneTwister64() {
-	setSeed(System.currentTimeMillis());
+        setSeed(System.currentTimeMillis());
     }
 
     public MersenneTwister64(final long seed) {
-	setSeed(seed);
+        setSeed(seed);
     }
 
     public MersenneTwister64(final long[] ary) {
-	setSeed(ary);
+        setSeed(ary);
     }
 
     /**
      * Initalize the pseudo random number generator with 32-bits.
      */
     public void setSeed(final long seed) {
-	mt[0] = seed;
-	for (mti = 1; mti < NN; mti++) {
-	    mt[mti] = (6364136223846793005L * (mt[mti - 1] ^ (mt[mti - 1] >>> 62)) + mti);
-	}
+        mt[0] = seed;
+        for (mti = 1; mti < NN; mti++) {
+            mt[mti] = (6364136223846793005L * (mt[mti - 1] ^ (mt[mti - 1] >>> 62)) + mti);
+        }
     }
 
     public void setSeed(final long[] array) {
-	setSeed(19650218L);
-	int i = 1;
-	int j = 0;
-	int k = (NN > array.length ? NN : array.length);
-	for (; k != 0; k--) {
-	    mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 62)) * 3935559000370003845L))
-		+ array[j] + j;
-	    i++;
-	    j++;
-	    if (i >= NN) {
-		mt[0] = mt[NN - 1];
-		i = 1;
-	    }
-	    if (j >= array.length)
-		j = 0;
-	}
-	for (k = NN - 1; k != 0; k--) {
-	    mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 62)) * 2862933555777941757L))
-		- i;
-	    i++;
-	    if (i >= NN) {
-		mt[0] = mt[NN - 1];
-		i = 1;
-	    }
-	}
+        setSeed(19650218L);
+        int i = 1;
+        int j = 0;
+        int k = (NN > array.length ? NN : array.length);
+        for (; k != 0; k--) {
+            mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 62)) * 3935559000370003845L))
+                    + array[j] + j;
+            i++;
+            j++;
+            if (i >= NN) {
+                mt[0] = mt[NN - 1];
+                i = 1;
+            }
+            if (j >= array.length)
+                j = 0;
+        }
+        for (k = NN - 1; k != 0; k--) {
+            mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 62)) * 2862933555777941757L))
+                    - i;
+            i++;
+            if (i >= NN) {
+                mt[0] = mt[NN - 1];
+                i = 1;
+            }
+        }
 
-	mt[0] = 1L << 63; /* MSB is 1; assuring non-zero initial array */
+        mt[0] = 1L << 63; /* MSB is 1; assuring non-zero initial array */
     }
 
     /**
@@ -165,17 +165,17 @@ public class MersenneTwister64 implements RandomGenerator {
      * two 32-bit chunks.
      * </p>
      */
-    public int next(final int numbits) {
-	//return ((int)next64()) >>> (32 - numbits);
+    public long next(final int numbits) {
+        //return ((int)next64()) >>> (32 - numbits);
 
-	if (bitState) {
-	    bits = next64();
-	    bitState = false;
-	    return (int) (bits >>> (64 - numbits));
-	} else {
-	    bitState = true;
-	    return ((int) bits) >>> (32 - numbits);
-	}
+        if (bitState) {
+            bits = next64();
+            bitState = false;
+            return ((int) bits >>> (64 - numbits));
+        } else {
+            bitState = true;
+            return ((int) bits) >>> (32 - numbits);
+        }
     }
 
     /**
@@ -188,31 +188,31 @@ public class MersenneTwister64 implements RandomGenerator {
      * </p>
      */
     public long next64() {
-	int i;
-	long x;
-	if (mti >= NN) { /* generate NN words at one time */
+        int i;
+        long x;
+        if (mti >= NN) { /* generate NN words at one time */
 
-	    for (i = 0; i < NN - MM; i++) {
-		x = (mt[i] & UM) | (mt[i + 1] & LM);
-		mt[i] = mt[i + MM] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
-	    }
-	    for (; i < NN - 1; i++) {
-		x = (mt[i] & UM) | (mt[i + 1] & LM);
-		mt[i] = mt[i + (MM - NN)] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
-	    }
-	    x = (mt[NN - 1] & UM) | (mt[0] & LM);
-	    mt[NN - 1] = mt[MM - 1] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
+            for (i = 0; i < NN - MM; i++) {
+                x = (mt[i] & UM) | (mt[i + 1] & LM);
+                mt[i] = mt[i + MM] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
+            }
+            for (; i < NN - 1; i++) {
+                x = (mt[i] & UM) | (mt[i + 1] & LM);
+                mt[i] = mt[i + (MM - NN)] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
+            }
+            x = (mt[NN - 1] & UM) | (mt[0] & LM);
+            mt[NN - 1] = mt[MM - 1] ^ (x >>> 1) ^ mag01[(int) (x & 1L)];
 
-	    mti = 0;
-	}
+            mti = 0;
+        }
 
-	x = mt[mti++];
+        x = mt[mti++];
 
-	x ^= (x >>> 29) & 0x5555555555555555L;
-	x ^= (x << 17) & 0x71D67FFFEDA60000L;
-	x ^= (x << 37) & 0xFFF7EEE000000000L;
-	x ^= (x >>> 43);
+        x ^= (x >>> 29) & 0x5555555555555555L;
+        x ^= (x << 17) & 0x71D67FFFEDA60000L;
+        x ^= (x << 37) & 0xFFF7EEE000000000L;
+        x ^= (x >>> 43);
 
-	return x;
+        return x;
     }
 }
